@@ -49,7 +49,7 @@ export default class World extends Component {
     const nemesis = npc(game)('./assets/player_red.png');
     const nemesisWalk = walk();
     nemesisWalk.startWalking();
-    console.log({ nemesis });
+    console.log({ nemesis, avatar });
 
     const snow = mkSnow({
       game,
@@ -61,7 +61,7 @@ export default class World extends Component {
 
     addFog(game);
 
-    game.on('tick', function() {
+    game.on('tick', () => {
       const now = Date.now() / 1000;
       snow.tick();
       playerWalk.render(target.playerSkin);
