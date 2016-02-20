@@ -3,7 +3,7 @@ node_js:
 - '4'
 script:
 - npm run build
-- if [[ "${TRAVIS_BRANCH}" == "master" ]]; then npm install -g firebase-tools; firebase deploy --token "$FIREBASE_DEPLOY_KEY"; fi
+- if [[ "${TRAVIS_BRANCH}" == "master" ]]; then npm install -g firebase-tools && firebase login --token "$FIREBASE_DEPLOY_KEY" && firebase deploy; fi
 env:
   global:
     secure: RXYjgMl0zzp359TrnqcK042LjMoTf3HYoP/h+z6ru36WQRp9QlybHfkkqp4z50xljNixyHAK4gTdJ5r5ivnJ0E7DfsVmjm2l7bn23ZAFtj7RWGGXnnwdADLrXkjk7EG7NDquQfAB2vdM6oHk3M2ORxfi6jjWY3iw5gFTd3dvnn/pKtisisk9yuAXCBoRwZT3hM37RU0hFEt8n6sdcU9jJyIAFtKJyvoHWyUFrr8Hx0LoNJXKIjV7AKyrTldkKY4UqW8gUKwSHYWE0DXnWrRl4mCsWZsS/YdopU5/3nbwtqiEnrZezAlyCu4uT/hf/eOCNJ9cqJX79uusSzcOjwSoGU/XzKAgCIt+w2uFHlkDEGXTJdfP5viPVgxrYcCLRHyjlb7VbUZqKgbIhA/YMZZPd4W1qPScj7tSakmvjvcCHFqxsQ/3zQhWh9aGy2xtL0wXsrzGPPQ5Svtht/DXvbX2nTg+WAeMix9WqZnUXDMQyZLTjhyN5PZF2Ym2XpR2HdQhpAHYXbZIPbJCIwL3EzuMrfDJMGRMp+ffrHEPuVO492BArhOWwoH2+Bi+v0Wx6LuXXOksWBBgDue5SgFfG3GYDDUWAgvVSCOdI1BpmsQAnkT7ulezGQqKYLmybiWZEWi/qxrg6cigWO6md5WABKL6KAkCTu5raBpBBxKOwrP3osk=
