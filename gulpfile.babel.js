@@ -9,6 +9,9 @@ import sassify from 'sassify';
 import sass from 'gulp-sass';
 import runSequence from 'run-sequence';
 import eslint from 'gulp-eslint';
+import url from 'url';
+import path from 'path';
+import fs from 'fs';
 
 const bs = browserSync.create();
 
@@ -41,27 +44,38 @@ gulp.task('assets', () => {
     gulp.src('assets/**').pipe(gulp.dest('dist/assets'));
 });
 
-gulp.task('sass', () => {
-    gulp.src('src/sass/style.s*ss')
-        .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('dist/css'));
-});
-
 gulp.task('watch', () => {
     gulp.watch('src/**/*.js', ['bundle'])
     gulp.watch('assets/**', ['assets']);
-    gulp.watch('src/*.s*ss', ['sass']);
+    gulp.watch('index.html', ['index']);
     gulp.watch('dist/**/*', bs.reload);
 });
+
+gulp.task('index', () => {
+  gulp.src('index.html').pipe(gulp.dest('dist/'));
+});
+
+const folder = path.resolve(__dirname, 'dist/');
 
 gulp.task('serve', () => {
     bs.init({
         port: 3000,
         server: {
-            baseDir: './'
+            baseDir: './dist',
+            middleware: function(req, res, next) {
+              var fileName = url.parse(req.url);
+              fileName = fileName.href.split(fileName.search).join("");
+              var fileExists = fs.existsSync(folder + fileName);
+              if (!fileExists && fileName.indexOf("browser-sync-client") < 0) {
+                req.url = '/index.html';
+              }
+              return next();
+            },
         },
     });
 });
+
+gulp.task('compile', ['assets', 'bundle', 'index']);
 
 gulp.task('lint', () => {
     gulp.src('./src/**/*.js')
@@ -71,5 +85,5 @@ gulp.task('lint', () => {
 });
 
 gulp.task('default', (cb) => {
-    runSequence('watch', 'sass', 'bundle', 'serve', cb)
+    runSequence('watch', 'index', 'bundle', 'serve', cb)
 });
