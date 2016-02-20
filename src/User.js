@@ -7,7 +7,7 @@ export default class User {
         this.firebaseUserRef = firebaseUsersRef.child(username);
     }
 
-    // reducer will call this after reciveing UPDATE_SELF action
+    // reducer will call this after reciveing INIT_SELF action
     updateSelf(properties) {
         this.firebaseUserRef.update(properties);
     }

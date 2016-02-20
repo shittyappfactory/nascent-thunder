@@ -39,16 +39,6 @@ export default function(state = storeInitialState, action) {
   		}
   	}	
   	
-  	case ACTIONS.INIT_SELF: {
-  		
-  		self.updateSelf(PLAYER_DEFAULTS);
-
-  		return {
-  			...state,
-  			self
-  		};
-  	}
-
   	// recieved from Game
   	case ACTIONS.UPDATE_SELF: {
   		state.self.updateSelf(action.properties);
