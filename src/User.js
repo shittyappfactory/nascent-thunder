@@ -24,14 +24,12 @@ export default class User extends FirebaseConnection {
 
     // reducer will call this after reciveing UPDATE_LOCATION action
     set location(location) {
-        this.location = location;
         this.firebaseUserRef.update({
             location
         });
     }
 
     set status(status) {
-        this.status = status;
         this.firebaseUserRef.update({
             status
         })
