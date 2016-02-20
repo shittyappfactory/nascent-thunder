@@ -13,7 +13,7 @@ export default class NameInput extends Component {
         <button onClick={
           (e) => {
             this.props.onButtonClicked(this.state.username);
-            return false;
+            e.preventDefault();
           }
         }>Create User</button>
       </div>
