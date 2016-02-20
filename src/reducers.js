@@ -9,6 +9,8 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
+
+  	case ACTIONS.APP_INIT: break;
   	
   	case ACTIONS.INIT_SELF: {
   		return {

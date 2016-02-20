@@ -10,8 +10,6 @@ import createLogger from 'redux-logger';
 import reducers from './reducers'
 
 import World from './world';
-import User from './User';
-import fbSync from './firebase-sync';
 
 import './index.scss';
 
@@ -24,9 +22,6 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, createLogger())(createStore)
 
 const store = createStoreWithMiddleware(reducer)
-const fbRef = fbSync(constants.FIREBASE_URI)
-
-const testUser = new User('obogobo');
 
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;

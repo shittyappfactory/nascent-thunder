@@ -4,8 +4,8 @@ export default {
 }
 
 export const ACTIONS = {
-	INIT_SELF: 'INIT_SELF',
 	APP_INIT: 'APP_INIT',
+	INIT_SELF: 'INIT_SELF',
 	UPDATE_SELF: 'UPDATE_SELF',
 	UPDATE_OTHER: 'UPDATE_OTHER'
 }
