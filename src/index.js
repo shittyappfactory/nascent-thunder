@@ -10,6 +10,7 @@ import reducers from './reducers'
 
 import World from './world';
 import User from './User';
+import fbSync from './firebase-sync';
 
 import './index.scss';
 
