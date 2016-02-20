@@ -4,22 +4,23 @@ import createEngine from 'voxel-engine';
 import createTerrain from 'voxel-perlin-terrain';
 import mkPlayer from 'voxel-player';
 import mkSnow from 'voxel-snow';
-import hello from 'voxel-hello-world';
+
+import gameSetup from './gameSetup';
 
 import './world.scss';
 
 export default class World extends Component {
   componentDidMount() {
-    const game = hello({
+    const game = gameSetup({
       texturePath: '/assets/',
       materials: [
-          'obsidian',
-          ['whitewool', 'dirt', 'grass_dirt'],
-          'grass',
-          'brick'
-        ],
-        playerSkin: '/assets/player.png',
-        startingPosition: [0, 1000, 0],
+        ['whitewool', 'dirt', 'grass_dirt'],
+        'obsidian',
+        'grass',
+        'brick'
+      ],
+      playerSkin: '/assets/player.png',
+      startingPosition: [0, 1000, 0],
     });
     game.appendTo(this.refs.viewport);
   }
