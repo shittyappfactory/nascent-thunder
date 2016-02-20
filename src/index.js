@@ -1,11 +1,12 @@
-import constants from './constants'
+import constants, { ACTIONS } from './constants'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { Provider } from 'react-redux'
+import { Provider, connect } from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'react-router-redux'
+import createLogger from 'redux-logger';
 import reducers from './reducers'
 
 import World from './world';
@@ -20,7 +21,7 @@ const reducer = combineReducers(Object.assign({}, { reducers }, {
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory)
-const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createStore)
+const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, createLogger())(createStore)
 
 const store = createStoreWithMiddleware(reducer)
 const fbRef = fbSync(constants.FIREBASE_URI)
@@ -40,9 +41,16 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <Route path="foo" component={Foo}/>
         <Route path="bar" component={Bar}/>
-        <Route path="world" component={World} />
+        <Route path="world" component={connect()(World)} />
       </Route>
     </Router>
   </Provider>,
-  document.getElementById('content')
+  document.getElementById('content'),
+  () => {
+    store.dispatch({type: ACTIONS.APP_INIT});
+    store.dispatch({
+      type: ACTIONS.INIT_SELF,
+      username: 'obogobobogobobo'
+    });
+  }
 )
