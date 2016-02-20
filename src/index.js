@@ -1,4 +1,5 @@
 import constants, { ACTIONS } from './constants'
+import './index.scss';
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -10,8 +11,6 @@ import createLogger from 'redux-logger';
 import reducers from './reducers'
 
 import World from './world';
-
-import './index.scss';
 
 const reducer = combineReducers(Object.assign({}, { reducers }, {
   routing: routeReducer
@@ -42,6 +41,10 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('content'),
   () => {
-    store.dispatch({type: ACTIONS.APP_INIT});
+    store.dispatch({
+      type: ACTIONS.APP_INIT,
+      username: 'Default_Test_User',
+      dispatch: store.dispatch,
+    });
   }
 )
