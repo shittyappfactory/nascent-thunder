@@ -19,7 +19,6 @@
     "browser-sync": "^2.11.1",
     "browserify": "^13.0.0",
     "gulp": "^3.9.1",
-    "gulp-eslint": "^2.0.0",
     "gulp-sass": "^2.2.0",
     "gulp-util": "^3.0.7",
     "reactify": "^1.1.1",
@@ -30,6 +29,7 @@
   "dependencies": {
     "extend": "^3.0.0",
     "firebase": "^2.4.1",
+    "minecraft-skin": "^0.1.2",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",

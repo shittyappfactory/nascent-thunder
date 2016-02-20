@@ -8,7 +8,6 @@ import reactify from 'reactify';
 import sassify from 'sassify';
 import sass from 'gulp-sass';
 import runSequence from 'run-sequence';
-import eslint from 'gulp-eslint';
 import url from 'url';
 import path from 'path';
 import fs from 'fs';
@@ -77,13 +76,6 @@ gulp.task('serve', () => {
 });
 
 gulp.task('compile', ['assets', 'bundle', 'index']);
-
-gulp.task('lint', () => {
-    gulp.src('./src/**/*.js')
-        .pipe(eslint())
-        .pipe(eslint.format())
-        .pipe(eslint.failOnError());
-});
 
 gulp.task('default', (cb) => {
     runSequence('watch', 'index', 'bundle', 'serve', cb)
