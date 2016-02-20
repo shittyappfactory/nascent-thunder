@@ -9,3 +9,15 @@ export const ACTIONS = {
 	UPDATE_SELF: 'UPDATE_SELF',
 	UPDATE_OTHER: 'UPDATE_OTHER'
 }
+
+export const PLAYER_DEFAULTS = {
+	isWalking: false,
+	location: {
+		x: 0,
+		y: 0,
+		z: 0
+	},
+	pitch: 0,
+	yaw: 0,
+	velocity: 0
+}

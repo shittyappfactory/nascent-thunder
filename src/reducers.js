@@ -1,35 +1,30 @@
 
-import constants, { ACTIONS } from './constants';
+import constants, { ACTIONS, PLAYER_DEFAULTS } from './constants';
 import User from './User';
 
-const initialState = {
+const storeInitialState = {
 	self: null,
 	players: {}
 }
 
-export default function(state = initialState, action) {
+export default function(state = storeInitialState, action) {
   switch (action.type) {
-
+  	
   	case ACTIONS.APP_INIT: break;
   	
   	case ACTIONS.INIT_SELF: {
+  		const self = new User(action.username)
+  		self.updateSelf(PLAYER_DEFAULTS);
+
   		return {
   			...state,
-  			self: new User(action.username)
+  			self
   		};
   	}
 
   	// recieved from Game
   	case ACTIONS.UPDATE_SELF: {
   		state.self.updateSelf(action.properties);
-  		// action.properties will look something like this...
-  		/* 
-			location: { x, y, z : Numbers },
-			yaw: Number,
-			pitch: Number,
-			walking: Boolean
-  		*/
-  	
   		return {
   			...state,
   		}

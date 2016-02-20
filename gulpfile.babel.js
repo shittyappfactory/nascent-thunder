@@ -48,7 +48,7 @@ gulp.task('watch', () => {
     gulp.watch('src/**/*.js', ['bundle'])
     gulp.watch('assets/**', ['assets']);
     gulp.watch('index.html', ['index']);
-    gulp.watch('dist/**/*', bs.reload);
+    // gulp.watch('dist/**/*', bs.reload);
 });
 
 gulp.task('index', () => {

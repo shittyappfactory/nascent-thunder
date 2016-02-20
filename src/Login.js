@@ -10,7 +10,6 @@ export default class Login extends Component {
     return (<div className="Login">
         <form>
           <NameInput onButtonClicked={ username => {
-            debugger;
             dispatch({
               type: "INIT_SELF",
               username
