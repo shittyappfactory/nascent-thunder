@@ -48,9 +48,5 @@ ReactDOM.render(
   document.getElementById('content'),
   () => {
     store.dispatch({type: ACTIONS.APP_INIT});
-    store.dispatch({
-      type: ACTIONS.INIT_SELF,
-      username: 'obogobobogobobo'
-    });
   }
 )

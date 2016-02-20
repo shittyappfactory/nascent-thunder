@@ -2,7 +2,7 @@ import constants from './constants';
 import FirebaseConnection from './FirebaseConnection'
 
 export default class User extends FirebaseConnection {
-    
+
     constructor(username) {
         super();
         const usersRef = this.firebaseRootRef.child('users');
@@ -19,4 +19,3 @@ export default class User extends FirebaseConnection {
         this.firebaseUserRef.update(properties);
     }
 }
-
