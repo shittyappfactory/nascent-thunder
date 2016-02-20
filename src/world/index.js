@@ -22,6 +22,7 @@ export default class World extends Component {
         'grass',
         'brick'
       ],
+      generate: (x, y, z) => y < 0 ? ((Math.abs(x) < 5 && Math.abs(z) < 5) ? 4 : 1) : 0,
       playerSkin: '/assets/player.png',
       startingPosition: [0, 1000, 0],
     });
@@ -35,11 +36,17 @@ export default class World extends Component {
       if (ev.keyCode === 'R'.charCodeAt(0)) avatar.toggle();
     })
 
-    //const nemesis = npc(game)('./assets/player.png');
-    //nemesis.yaw.position.set(30, 20, 40);
+    const nemesis = npc(game)('./assets/player_red.png');
+    const nemesisWalk = walk();
+    nemesisWalk.startWalking();
+    console.log({ nemesis });
 
     game.on('tick', function() {
+      const now = Date.now() / 1000;
       playerWalk.render(target.playerSkin);
+      nemesis.mesh.position.set(10*Math.cos(0.2 * now), 0, 10*Math.sin(0.2 * now));
+      nemesis.mesh.rotation.set(0, Math.atan2(Math.cos(0.2*now), Math.sin(0.2*now)) + Math.PI / 2, 0);
+      nemesisWalk.render(nemesis);
       const vx = Math.abs(target.velocity.x);
       const vz = Math.abs(target.velocity.z);
       if (vx > 0.001 || vz > 0.001) playerWalk.stopWalking();
