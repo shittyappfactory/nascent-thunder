@@ -1,3 +1,5 @@
+import constants from './constants'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { createStore, combineReducers, applyMiddleware } from 'redux'
@@ -5,6 +7,7 @@ import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'react-router-redux'
 import reducers from './reducers'
+import fbSync from './firebase-sync'
 
 import World from './world';
 
@@ -19,6 +22,8 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createStore)
 
 const store = createStoreWithMiddleware(reducer)
+const fbRef = fbSync(constants.FIREBASE_URI)
+debugger;
 
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;
