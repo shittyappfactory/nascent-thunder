@@ -31,8 +31,9 @@ const bundle = () => {
         .on('error', function (err) {
             gutil.log('Browserify error\n' + err.toString() + '\n' + err.codeFrame);
             return;
-        })
-        .pipe(source('bundle.js'))
+        });
+
+    task.pipe(source('bundle.js'))
         .pipe(gulp.dest('./dist/js'));
 
     return task;
