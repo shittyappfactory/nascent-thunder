@@ -7,9 +7,9 @@ import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistory, routeReducer } from 'react-router-redux'
 import reducers from './reducers'
-import fbSync from './firebase-sync'
 
 import World from './world';
+import User from './User';
 
 import './index.scss';
 
@@ -23,6 +23,8 @@ const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createS
 
 const store = createStoreWithMiddleware(reducer)
 const fbRef = fbSync(constants.FIREBASE_URI)
+
+const testUser = new User('obogobo');
 
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;
