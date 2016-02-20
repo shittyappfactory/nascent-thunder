@@ -9,6 +9,8 @@ import { syncHistory, routeReducer } from 'react-router-redux'
 import reducers from './reducers'
 import fbSync from './firebase-sync'
 
+import World from './world';
+
 import './index.scss';
 
 const reducer = combineReducers(Object.assign({}, { reducers }, {
@@ -36,6 +38,7 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <Route path="foo" component={Foo}/>
         <Route path="bar" component={Bar}/>
+        <Route path="world" component={World} />
       </Route>
     </Router>
   </Provider>,
