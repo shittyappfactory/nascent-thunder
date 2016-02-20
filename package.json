@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "$(npm bin)/gulp compile",
+    "start": "$(npm bin)/gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -31,6 +32,10 @@
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "react-router-redux": "^3.0.0",
-    "redux": "^3.3.1"
+    "redux": "^3.3.1",
+    "voxel-engine": "^0.20.2",
+    "voxel-perlin-terrain": "^1.0.0",
+    "voxel-player": "^0.1.0",
+    "voxel-snow": "^0.2.0"
   }
 }
