@@ -23,7 +23,6 @@ const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware)(createS
 
 const store = createStoreWithMiddleware(reducer)
 const fbRef = fbSync(constants.FIREBASE_URI)
-debugger;
 
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;
