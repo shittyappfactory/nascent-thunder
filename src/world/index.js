@@ -7,100 +7,162 @@ import mkSnow from 'voxel-snow';
 
 import './world.scss';
 
-var createGame = require('voxel-engine')
-var highlight = require('voxel-highlight')
-var player = require('voxel-player')
-var voxel = require('voxel')
-var extend = require('extend')
-var fly = require('voxel-fly')
-var walk = require('voxel-walk')
-
-function createGame(opts, setup) {
-  setup = setup || defaultSetup
-  var defaults = {
-    generate: voxel.generator['Valley'],
-    chunkDistance: 2,
-    materials: ['#fff', '#000'],
-    materialFlatColor: true,
-    worldOrigin: [0, 0, 0],
-    controls: { discreteFire: true }
-  }
-  opts = extend({}, defaults, opts || {})
-
-  // setup the game and add some trees
-  var game = createGame(opts)
-  var container = opts.container || document.body
-  window.game = game // for debugging
-  game.appendTo(container)
-  if (game.notCapable()) return game
-
-  var createPlayer = player(game)
-
-  // create the player from a minecraft skin file and tell the
-  // game to use it as the main player
-  var avatar = createPlayer(opts.playerSkin || 'player.png')
-  avatar.possess()
-  avatar.yaw.position.set(2, 14, 4)
-
-  setup(game, avatar)
-
-  return game
-}
-
-function defaultSetup(game, avatar) {
-
-  var makeFly = fly(game)
-  var target = game.controls.target()
-  game.flyer = makeFly(target)
-
-  // highlight blocks when you look at them, hold <Ctrl> for block placement
-  var blockPosPlace, blockPosErase
-  var hl = game.highlighter = highlight(game, { color: 0xff0000 })
-  hl.on('highlight', function (voxelPos) { blockPosErase = voxelPos })
-  hl.on('remove', function (voxelPos) { blockPosErase = null })
-  hl.on('highlight-adjacent', function (voxelPos) { blockPosPlace = voxelPos })
-  hl.on('remove-adjacent', function (voxelPos) { blockPosPlace = null })
-
-  // toggle between first and third person modes
-  window.addEventListener('keydown', function (ev) {
-    if (ev.keyCode === 'R'.charCodeAt(0)) avatar.toggle()
-  })
-
-  // block interaction stuff, uses highlight data
-  var currentMaterial = 1
-
-  game.on('fire', function (target, state) {
-    var position = blockPosPlace
-    if (position) {
-      game.createBlock(position, currentMaterial)
-    }
-    else {
-      position = blockPosErase
-      if (position) game.setBlock(position, 0)
-    }
-  })
-
-  game.on('tick', function() {
-    walk.render(target.playerSkin)
-    var vx = Math.abs(target.velocity.x)
-    var vz = Math.abs(target.velocity.z)
-    if (vx > 0.001 || vz > 0.001) walk.stopWalking()
-    else walk.startWalking()
-  })
-
-}
-
 export default class World extends Component {
   componentDidMount() {
-    const game = createGame({
-      texturePath: '/assets/',
-      materials: [
-          'obsidian',
-          ['whitewool', 'dirt', 'grass_dirt'],
-          'grass',
-          'brick'
-        ],
-    });
+    var createGame = require('voxel-engine')
+
+function sphereWorld(x, y, z) {
+  // return the index of the material you want to show up
+  // 0 is air
+	if (x*x + y*y + z*z > 15*15) return 0
+  return 3
+}
+
+function flatWorld(i,j,k) {
+  return j < 1 ? 1 : 0;
+}
+
+function swordfishII(prev, curr){
+	var voxels = [
+    [-6, 1, -1, 2],
+    [-5, 1, -1, 2],
+    [-4, 1, -1, 2],
+    [-3, 1, -1, 2],
+    [-2, 1, -1, 2],
+    [-1, 1, -1, 2],
+    [0, 1, -1, 2],
+    [1, 1, -1, 2],
+    [-5, 1, 0, 2],
+    [-5, 1, -2, 2],
+    [-4, 1, 0, 2],
+    [-3, 1, 0, 2],
+    [-3, 1, -2, 2],
+    [-4, 1, -2, 2],
+    [-2, 1, -3, 2],
+    [-1, 1, -3, 2],
+    [0, 1, -3, 2],
+    [-2, 1, 1, 2],
+    [-1, 1, 1, 2],
+    [0, 1, 1, 2],
+    [1, 1, -4, 2],
+    [1, 1, -5, 2],
+    [1, 1, -6, 2],
+    [1, 1, -7, 2],
+    [1, 1, -8, 2],
+    [1, 1, 2, 2],
+    [1, 1, 3, 2],
+    [1, 1, 4, 2],
+    [1, 1, 5, 2],
+    [1, 1, 6, 2],
+    [0, 1, 7, 2],
+    [-1, 1, 7, 2],
+    [0, 1, -9, 2],
+    [-1, 1, -9, 2],
+    [2, 1, -9, 2],
+    [1, 1, -9, 2],
+    [2, 1, -7, 2],
+    [2, 1, -8, 2],
+    [2, 1, -6, 2],
+    [2, 1, -5, 2],
+    [2, 1, -4, 2],
+    [2, 1, 2, 2],
+    [2, 1, 3, 2],
+    [2, 1, 4, 2],
+    [2, 1, 5, 2],
+    [2, 1, 6, 2],
+    [2, 1, 7, 2],
+    [1, 1, 7, 2],
+    [-9, 2, -1, 2],
+    [-8, 2, -1, 2],
+    [-7, 2, -1, 2],
+    [-6, 2, -1, 2],
+    [-5, 2, -1, 2],
+    [-4, 2, -1, 2],
+    [-3, 2, -1, 2],
+    [-4, 3, -1, 2],
+    [-3, 3, -1, 2],
+    [-3, 2, 0, 2],
+    [-3, 2, -2, 2],
+    [3, 1, 0, 2],
+    [3, 1, -1, 2],
+    [3, 1, -2, 2],
+    [4, 1, 0, 2],
+    [4, 1, -1, 2],
+    [4, 1, -2, 2],
+    [4, 2, 0, 2],
+    [4, 2, -1, 2],
+    [4, 2, -2, 2],
+    [4, 2, -3, 2],
+    [4, 3, 0, 2],
+    [4, 3, -1, 2],
+    [4, 3, -2, 2],
+    [4, 2, 1, 2],
+    [2, 1, 1, 2],
+    [2, 1, 0, 2],
+    [2, 1, -1, 2],
+    [2, 1, -2, 2],
+    [2, 1, -3, 2],
+    [1, 1, 1, 2],
+    [1, 1, 0, 2],
+    [1, 1, -2, 2],
+    [1, 1, -3, 2],
+    [0, 1, -2, 2],
+    [-1, 1, -2, 2],
+    [-2, 1, -2, 2],
+    [-2, 1, 0, 2],
+    [-1, 1, 0, 2],
+    [0, 1, 0, 2],
+    [-2, 2, 1, 2],
+    [-1, 2, 1, 2],
+    [0, 2, 1, 2],
+    [1, 2, 1, 2],
+    [2, 2, 0, 2],
+    [2, 2, -1, 2],
+    [2, 2, -2, 2],
+    [1, 2, -3, 2],
+    [0, 2, -3, 2],
+    [-1, 2, -3, 2],
+    [-2, 2, -3, 2],
+    [3, 2, 0, 2],
+    [3, 2, -1, 2],
+    [3, 2, -2, 2]
+  ];
+	var dimensions = [13,3,16]
+	var size = game.cubeSize
+  voxels.map(function(voxel) {
+
+	});
+	voxels.map(function(voxel) {
+    game.setBlock({x: prev.x + voxel[0] * size, y: prev.y + voxel[1] * size, z: prev.z + voxel[2] * size}, 0)
+  	game.setBlock({x: curr.x + voxel[0] * size, y: curr.y + voxel[1] * size, z: curr.z + voxel[2] * size}, voxel[3])
+	});
+}
+
+var game = createGame({
+  generate: sphereWorld,//flatWorld,
+  startingPosition: [0, 1000, 0], // x, y, z
+  materials: [['grass', 'dirt', 'grass_dirt'], 'brick', 'dirt', 'obsidian', 'bedrock'],
+  cubeSize: 25
+})
+
+// rotate camera to look straight down
+game.controls.pitchObject.rotation.x = -1.5
+
+//game.createBlock({x:0, y:50, z:0}, 3);
+//game.createBlock({x:0, y:99, z:0}, 4);
+
+var curr = {x: 20, y: 600, z: 0}
+  , prev = {x: 20, y: 600, z: 0}
+
+setInterval(function(){
+  prev.x = curr.x;
+  prev.y = curr.y;
+  prev.z = curr.z;
+
+  curr.x -= 1;
+  swordfishII(prev, curr);
+}, 100)
+
     game.appendTo(this.refs.viewport);
   }
   render() {
