@@ -27,15 +27,20 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "extend": "^3.0.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-redux": "^4.4.0",
     "react-router": "^2.0.0",
     "react-router-redux": "^3.0.0",
     "redux": "^3.3.1",
+    "voxel": "^0.5.0",
     "voxel-engine": "^0.20.2",
+    "voxel-fly": "^0.1.2",
+    "voxel-highlight": "0.0.10",
     "voxel-perlin-terrain": "^1.0.0",
     "voxel-player": "^0.1.0",
-    "voxel-snow": "^0.2.0"
+    "voxel-snow": "^0.2.0",
+    "voxel-walk": "0.0.5"
   }
 }

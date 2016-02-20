@@ -7,47 +7,101 @@ import mkSnow from 'voxel-snow';
 
 import './world.scss';
 
-export function mkGame() {
-  const game = createEngine({
-    generateVoxelChunk: createTerrain({ scaleFactor: 10 }),
+var createGame = require('voxel-engine')
+var highlight = require('voxel-highlight')
+var player = require('voxel-player')
+var voxel = require('voxel')
+var extend = require('extend')
+var fly = require('voxel-fly')
+var walk = require('voxel-walk')
+
+function createGame(opts, setup) {
+  setup = setup || defaultSetup
+  var defaults = {
+    generate: voxel.generator['Valley'],
     chunkDistance: 2,
-    materials: [
-      'obsidian',
-      ['whitewool', 'dirt', 'grass_dirt'],
-      'grass',
-      'plank'
-    ],
-    texturePath: '/assets/',
+    materials: ['#fff', '#000'],
+    materialFlatColor: true,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true }
-  });
+  }
+  opts = extend({}, defaults, opts || {})
 
-  const createPlayer = mkPlayer(game);
-  const player = createPlayer('/assets/player.png');
-  player.yaw.position.set(0, 0, 0);
-  player.possess();
+  // setup the game and add some trees
+  var game = createGame(opts)
+  var container = opts.container || document.body
+  window.game = game // for debugging
+  game.appendTo(container)
+  if (game.notCapable()) return game
 
-  const snow = mkSnow({
-    game: game,
-    count: 2000,
-    size: 20
-  });
+  var createPlayer = player(game)
 
-  game.on('tick', function() {
-    snow.tick();
-  });
+  // create the player from a minecraft skin file and tell the
+  // game to use it as the main player
+  var avatar = createPlayer(opts.playerSkin || 'player.png')
+  avatar.possess()
+  avatar.yaw.position.set(2, 14, 4)
 
-  return game;
+  setup(game, avatar)
+
+  return game
 }
 
-export function appendTo(game, el) {
-  game.appendTo(el);
+function defaultSetup(game, avatar) {
+
+  var makeFly = fly(game)
+  var target = game.controls.target()
+  game.flyer = makeFly(target)
+
+  // highlight blocks when you look at them, hold <Ctrl> for block placement
+  var blockPosPlace, blockPosErase
+  var hl = game.highlighter = highlight(game, { color: 0xff0000 })
+  hl.on('highlight', function (voxelPos) { blockPosErase = voxelPos })
+  hl.on('remove', function (voxelPos) { blockPosErase = null })
+  hl.on('highlight-adjacent', function (voxelPos) { blockPosPlace = voxelPos })
+  hl.on('remove-adjacent', function (voxelPos) { blockPosPlace = null })
+
+  // toggle between first and third person modes
+  window.addEventListener('keydown', function (ev) {
+    if (ev.keyCode === 'R'.charCodeAt(0)) avatar.toggle()
+  })
+
+  // block interaction stuff, uses highlight data
+  var currentMaterial = 1
+
+  game.on('fire', function (target, state) {
+    var position = blockPosPlace
+    if (position) {
+      game.createBlock(position, currentMaterial)
+    }
+    else {
+      position = blockPosErase
+      if (position) game.setBlock(position, 0)
+    }
+  })
+
+  game.on('tick', function() {
+    walk.render(target.playerSkin)
+    var vx = Math.abs(target.velocity.x)
+    var vz = Math.abs(target.velocity.z)
+    if (vx > 0.001 || vz > 0.001) walk.stopWalking()
+    else walk.startWalking()
+  })
+
 }
 
 export default class World extends Component {
   componentDidMount() {
-    const game = mkGame();
-    appendTo(game, this.refs.viewport);
+    const game = createGame({
+      texturePath: '/assets/',
+      materials: [
+          'obsidian',
+          ['whitewool', 'dirt', 'grass_dirt'],
+          'grass',
+          'brick'
+        ],
+    });
+    game.appendTo(this.refs.viewport);
   }
   render() {
     return (<div className="World">
