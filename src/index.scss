@@ -12,3 +12,17 @@
     padding-top: 8em;
   }
 }
+
+.MessageBox {
+  position: absolute;
+  z-index: 1000;
+  width: 25%;
+  padding: 10px;
+  > p {
+    margin-bottom: 5px;
+  }
+}
+
+.World__viewport {
+  position: absolute;
+}
