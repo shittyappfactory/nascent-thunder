@@ -39,7 +39,7 @@ export default function(state = storeInitialState, action) {
   	}
 
   	case ACTIONS.INIT_SELF: {
-  		const self = new User(firebaseUsersRef, action.username);
+  		const self = new User(state.firebaseUsersRef, action.username);
   		self.updateSelf(PLAYER_DEFAULTS);
 
   		return {
