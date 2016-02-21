@@ -1,4 +1,3 @@
-import Firebase from 'firebase';
 import constants, { ACTIONS, PLAYER_DEFAULTS } from './constants';
 import User from './User';
 
@@ -7,6 +6,7 @@ const storeInitialState = {
 	players: {}
 }
 
+// ok, this reducer gets called AFTER the FirebaseMiddleware
 export default function(state = storeInitialState, action) {
 	switch (action.type) {
 		case ACTIONS.APP_INIT: return {
@@ -14,15 +14,18 @@ export default function(state = storeInitialState, action) {
 			dispatch: action.dispatch,
 		};
 
-		case ACTIONS.INIT_SELF: {
-			return {
-				...state,
-				self: {
-					...PLAYER_DEFAULTS(),
-					username: action.username,
-				}
-			};
-		}
+        case ACTIONS.INIT_SELF: {
+            return {
+                ...state,
+                self: {
+                    username: action.username,
+                    color: ((u) => {
+                        // make color from first 42 bits of sha1(username)
+                        return '#' + require('sha1')(u).substring(0, 7);
+                    })(action.username)
+                }
+            };
+        }
 
 		// recieved from Game
 		case ACTIONS.UPDATE_SELF: {

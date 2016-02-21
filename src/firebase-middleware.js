@@ -48,13 +48,19 @@ export default store => next => action => {
       };
 
       self = new User(firebaseUsersRef, action.username);
-      self.updateSelf(PLAYER_DEFAULTS);
+      self.updateSelf(PLAYER_DEFAULTS());
       break;
     }
 
     case ACTIONS.UPDATE_SELF: {
-            self.updateSelf(action.properties);
-      break;
+        const prevState = store.getState().game.self;
+        const newState = action.properties;
+
+        self.updateSelf({
+          ...prevState,
+          ...newState
+        });
+        break;
     }
 
     default: break;
