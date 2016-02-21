@@ -70,7 +70,6 @@ export default class World extends Component {
     let counter = 0;
     let delta = 0;
     let lastNow = 0;
-    
     /*
     this.props.dispatch({
       type: ACTIONS.INIT_SELF,

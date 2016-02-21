@@ -46,9 +46,5 @@ ReactDOM.render(
       type: ACTIONS.APP_INIT,
       dispatch: store.dispatch,
     });
-    store.dispatch({
-      type:ACTIONS.INIT_SELF,
-      username: 'junk'
-    });
   }
 )
