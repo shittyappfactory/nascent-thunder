@@ -35,12 +35,10 @@ reduxRouterMiddleware.listenForReplays(store)
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <Route path="login" component={Login} />
-        <Route path="foo" component={Foo}/>
-        <Route path="bar" component={Bar}/>
-        <Route path="world" component={connect(({game}) => ({game}))(World)} />
-      </Route>
+      <Route path="/" component={Login}/>
+      <Route path="foo" component={Foo}/>
+      <Route path="bar" component={Bar}/>
+      <Route path="world" component={connect(game => (game))(World)} />
     </Router>
   </Provider>,
   document.getElementById('content'),
