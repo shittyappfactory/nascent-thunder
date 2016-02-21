@@ -50,6 +50,19 @@ export default class World extends Component {
 
     const nemesis = npc(game)('./assets/player_red.png');
     const nemesisWalk = walk();
+
+    const nemeses = {};
+
+    const updateNemeses = () => {
+      const { players } = this.props.game;
+      Object.keys(players).forEach(username => {
+        const nemData = players[username];
+        let nem = nemeses[username];
+        if (!nem) nem = nemeses[username] = npc(game)('./assets/player_red.png');
+        nem.mesh.position.set(nemData.location.x, nemData.location.y, nemData.location.z);
+      });
+    };
+
     nemesisWalk.startWalking();
     console.log({ nemesis, avatar });
 
@@ -77,6 +90,7 @@ export default class World extends Component {
     });
 
     game.on('tick', () => {
+      updateNemeses();
       const now = Date.now();
       delta = now - lastNow;
       lastNow = now;

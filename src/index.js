@@ -39,7 +39,7 @@ ReactDOM.render(
         <Route path="login" component={Login} />
         <Route path="foo" component={Foo}/>
         <Route path="bar" component={Bar}/>
-        <Route path="world" component={connect()(World)} />
+        <Route path="world" component={connect(({game}) => ({game}))(World)} />
       </Route>
     </Router>
   </Provider>,
