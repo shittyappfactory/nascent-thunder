@@ -4,8 +4,20 @@ export default {
 }
 
 export const ACTIONS = {
-	INIT_SELF: 'INIT_SELF',
 	APP_INIT: 'APP_INIT',
+	INIT_SELF: 'INIT_SELF',
 	UPDATE_SELF: 'UPDATE_SELF',
 	UPDATE_OTHER: 'UPDATE_OTHER'
+}
+
+export const PLAYER_DEFAULTS = {
+	isWalking: false,
+	location: {
+		x: 0,
+		y: 0,
+		z: 0
+	},
+	pitch: 0,
+	yaw: 0,
+	velocity: 0
 }

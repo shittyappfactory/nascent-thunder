@@ -1,4 +1,5 @@
 import constants, { ACTIONS } from './constants'
+import './index.scss';
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -10,10 +11,7 @@ import createLogger from 'redux-logger';
 import reducers from './reducers'
 
 import World from './world';
-import User from './User';
-import fbSync from './firebase-sync';
-
-import './index.scss';
+import Login from './Login';
 
 const reducer = combineReducers(Object.assign({}, { reducers }, {
   routing: routeReducer
@@ -24,13 +22,11 @@ const reduxRouterMiddleware = syncHistory(browserHistory)
 const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, createLogger())(createStore)
 
 const store = createStoreWithMiddleware(reducer)
-const fbRef = fbSync(constants.FIREBASE_URI)
-
-const testUser = new User('obogobo');
 
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;
 const Bar = props => <div>Bar</div>;
+const LoginComponent = props => Login({ props });
 
 // Required for replaying actions from devtools to work
 reduxRouterMiddleware.listenForReplays(store)
@@ -38,19 +34,17 @@ reduxRouterMiddleware.listenForReplays(store)
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <Route path="foo" component={Foo}/>
-        <Route path="bar" component={Bar}/>
-        <Route path="world" component={connect()(World)} />
-      </Route>
+      <Route path="/" component={Login}/>
+      <Route path="foo" component={Foo}/>
+      <Route path="bar" component={Bar}/>
+      <Route path="world" component={connect(state => (state))(World)} />
     </Router>
   </Provider>,
   document.getElementById('content'),
   () => {
-    store.dispatch({type: ACTIONS.APP_INIT});
     store.dispatch({
-      type: ACTIONS.INIT_SELF,
-      username: 'obogobobogobobo'
+      type: ACTIONS.APP_INIT,
+      dispatch: store.dispatch,
     });
   }
 )

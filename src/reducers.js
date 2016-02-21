@@ -1,35 +1,58 @@
-
-import constants, { ACTIONS } from './constants';
+import Firebase from 'firebase';
+import constants, { ACTIONS, PLAYER_DEFAULTS } from './constants';
 import User from './User';
 
-const initialState = {
+const storeInitialState = {
 	self: null,
 	players: {}
 }
 
-export default function(state = initialState, action) {
+export default function(state = storeInitialState, action) {
   switch (action.type) {
   	
-  	case ACTIONS.INIT_SELF: {
+  	case ACTIONS.APP_INIT: {
+  		const firebaseRootRef = new Firebase(constants.FIREBASE_URI);
+  		const firebaseUsersRef = firebaseRootRef.child('users');
+  		
+  		
+  		const userUpdateHandler = (snapshot) => {
+  			const username = snapshot.key();
+  			const properties = snapshot.val();
+
+  			if (state.self !== null && state.self.username !== username) {
+  				action.dispatch({
+					type: ACTIONS.UPDATE_OTHER,
+					player: { username, properties }
+				});
+  			}
+  		};
+
+		// bind handlers for new user events
+		firebaseUsersRef.on('child_added', userUpdateHandler);
+  		firebaseUsersRef.on('child_changed', userUpdateHandler);
+  		
   		return {
   			...state,
-  			self: new User(action.username)
-  		};
+  			firebaseRootRef,
+  			firebaseUsersRef
+  		}
+  	}
+
+  	case ACTIONS.INIT_SELF: {
+  		const self = new User(state.firebaseUsersRef, action.username);
+  		self.updateSelf(PLAYER_DEFAULTS);
+
+  		return {
+  			...state,
+  			self
+  		}
   	}
 
   	// recieved from Game
   	case ACTIONS.UPDATE_SELF: {
   		state.self.updateSelf(action.properties);
-  		// action.properties will look something like this...
-  		/* 
-			location: { x, y, z : Numbers },
-			yaw: Number,
-			pitch: Number,
-			walking: Boolean
-  		*/
-  	
   		return {
-  			...state,
+  			...state
   		}
   	}
 
