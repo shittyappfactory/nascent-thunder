@@ -20,7 +20,7 @@ const reducer = combineReducers(Object.assign({}, { game: reducers }, {
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory)
-const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, fbMiddle, createLogger())(createStore)
+const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, fbMiddle /*createLogger()*/)(createStore)
 
 const store = createStoreWithMiddleware(reducer)
 

@@ -58,8 +58,23 @@ export default class World extends Component {
       Object.keys(players).forEach(username => {
         const nemData = players[username];
         let nem = nemeses[username];
-        if (!nem) nem = nemeses[username] = npc(game)('./assets/player_red.png');
+        if (!nem) {
+          nem = nemeses[username] = npc(game)('./assets/player_red.png');
+          nem.walk = walk();
+          nem.isWalking = null;
+        }
         nem.mesh.position.set(nemData.location.x, nemData.location.y, nemData.location.z);
+        nem.mesh.rotation.set(0, nemData.yaw, 0);
+        nem.head.rotation.set(0, 0, nemData.pitch);
+        nem.walk.render(nem);
+        if (nemData.isWalking !== nem.isWalking) {
+          if (nemData.isWalking) {
+            nem.walk.startWalking();
+          } else {
+            nem.walk.stopWalking();
+          }
+        }
+        nem.isWalking = nemData.isWalking;
       });
     };
 

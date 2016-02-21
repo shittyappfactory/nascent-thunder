@@ -14,7 +14,6 @@ firebaseUsersRef.on('child_added', outerUserUpdateHandler);
 firebaseUsersRef.on('child_changed', outerUserUpdateHandler);
 
 export default store => next => action => {
-  console.log('action!!', action.type)
   switch (action.type) {
     case ACTIONS.INIT_SELF: {
 
