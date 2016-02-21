@@ -1,1 +1,14 @@
 @import url("https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/slate/bootstrap.min.css");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css");
+
+.NameInput {
+  max-width: 400px;
+  margin: auto;
+}
+
+.Login {
+  text-align: center;
+  > form {
+    padding-top: 8em;
+  }
+}

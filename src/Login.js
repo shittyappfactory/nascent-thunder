@@ -9,6 +9,7 @@ export default class Login extends Component {
     const { state, dispatch } = this.props;
 
     return (<div className="Login">
+      <h1>Nascent Thunder <i className="fa fa-bolt" /></h1>
         <form>
           <NameInput onButtonClicked={ username => {
             dispatch({

@@ -38,7 +38,7 @@ ReactDOM.render(
       <Route path="/" component={Login}/>
       <Route path="foo" component={Foo}/>
       <Route path="bar" component={Bar}/>
-      <Route path="world" component={connect(game => (game))(World)} />
+      <Route path="world" component={connect(({ game }) => ({ game }))(World)} />
     </Router>
   </Provider>,
   document.getElementById('content'),
