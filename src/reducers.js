@@ -77,7 +77,8 @@ export default function(state = storeInitialState, action) {
 
             return {
                 ...state,
-                players: filteredPlayers
+                players: filteredPlayers,
+                messages
             }
         }
     }
