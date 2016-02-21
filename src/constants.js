@@ -10,7 +10,7 @@ export const ACTIONS = {
 	UPDATE_OTHER: 'UPDATE_OTHER'
 }
 
-export const PLAYER_DEFAULTS = {
+export const PLAYER_DEFAULTS = () => ({
 	isWalking: false,
 	location: {
 		x: 0,
@@ -20,4 +20,4 @@ export const PLAYER_DEFAULTS = {
 	pitch: 0,
 	yaw: 0,
 	velocity: 0
-}
+});

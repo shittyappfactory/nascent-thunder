@@ -12,14 +12,15 @@ import reducers from './reducers'
 
 import World from './world';
 import Login from './Login';
+import fbMiddle from './firebase-middleware';
 
-const reducer = combineReducers(Object.assign({}, { reducers }, {
+const reducer = combineReducers(Object.assign({}, { game: reducers }, {
   routing: routeReducer
 }))
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(browserHistory)
-const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, createLogger())(createStore)
+const createStoreWithMiddleware = applyMiddleware(reduxRouterMiddleware, fbMiddle, createLogger())(createStore)
 
 const store = createStoreWithMiddleware(reducer)
 
@@ -47,10 +48,6 @@ ReactDOM.render(
     store.dispatch({
       type: ACTIONS.APP_INIT,
       dispatch: store.dispatch,
-    });
-    store.dispatch({
-      type:ACTIONS.INIT_SELF,
-      username: 'junk'
     });
   }
 )
