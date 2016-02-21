@@ -20,10 +20,7 @@ export default function(state = storeInitialState, action) {
                 ...state,
                 self: {
                     username: action.username,
-                    color: ((u) => {
-                        // make color from first 42 bits of sha1(username)
-                        return '#' + require('sha1')(u).substring(0, 7);
-                    })(action.username)
+                    color: action.color
                 }
             };
         }
@@ -46,7 +43,9 @@ export default function(state = storeInitialState, action) {
                 messages = [...state.messages].slice(-4).concat(action.message);
             } else {
                 if (action.player && !state.players[action.player.username]) {
-                    messages = [...state.messages].slice(-4).concat(action.player.username + " is in the game");
+                    const message = action.player.properties.color + "$"
+                        + action.player.username + " is in the game";
+                    messages = [...state.messages].slice(-4).concat(message);
                 } else {
                     messages = state.messages;
                 }
@@ -68,6 +67,13 @@ export default function(state = storeInitialState, action) {
                 }
                 return acc;
             }, {});
+
+            let messages;
+            if (action.message) {
+                messages = [...state.messages].slice(-4).concat(action.message);
+            } else {
+                messages = state.messages;
+            }
 
             return {
                 ...state,

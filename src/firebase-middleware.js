@@ -37,7 +37,7 @@ export default store => next => action => {
             player: { username, properties },
           }
           if (isNewUser) {
-            payload.message = username + " has entered the game";
+            payload.message = properties.color + "$" + username + " has entered the game";
           }
           store.dispatch(payload);
         }
@@ -47,12 +47,21 @@ export default store => next => action => {
         const username = snapshot.key();
         store.dispatch({
             type: ACTIONS.DELETE_OTHER,
+            message: snapshot.val().color + "$" + username + " has left the game",
             username
         });
       };
+      const color = ((u) => {
+        // make color from first 42 bits of sha1(username)
+        return '#' + require('sha1')(u).substring(0, 6);
+      })(action.username)
 
       self = new User(firebaseUsersRef, action.username);
-      self.updateSelf(PLAYER_DEFAULTS());
+      self.updateSelf({
+        ...PLAYER_DEFAULTS(),
+        color
+      });
+      action.color = color;
       break;
     }
 
