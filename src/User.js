@@ -1,22 +1,14 @@
 import constants from './constants';
-import FirebaseConnection from './FirebaseConnection'
 
-export default class User extends FirebaseConnection {
-    
-    constructor(username) {
-        super();
-        const usersRef = this.firebaseRootRef.child('users');
-        this._makeUser(usersRef, username);
-    }
+export default class User {
 
-    _makeUser(usersRef, username) {
+    constructor(firebaseUsersRef, username) {
         this.username = username;
-        this.firebaseUserRef = usersRef.child(username);
+        this.firebaseUserRef = firebaseUsersRef.child(username);
     }
 
-    // reducer will call this after reciveing UPDATE_SELF action
+    // reducer will call this after reciveing INIT_SELF action
     updateSelf(properties) {
         this.firebaseUserRef.update(properties);
     }
 }
-

@@ -5,6 +5,7 @@ import createTerrain from 'voxel-perlin-terrain';
 import mkSnow from 'voxel-snow';
 import player from 'voxel-player';
 import fly from 'voxel-fly';
+import haikume from 'haiku.js';
 import walk from './multiwalk';
 import addFog from './fog';
 
@@ -69,6 +70,10 @@ export default class World extends Component {
     let counter = 0;
     let delta = 0;
     let lastNow = 0;
+    this.props.dispatch({
+      type: ACTIONS.INIT_SELF,
+      username: this.props.location.query.username || haikume(),
+    });
 
     game.on('tick', () => {
       const now = Date.now();
