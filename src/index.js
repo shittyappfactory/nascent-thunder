@@ -43,7 +43,6 @@ ReactDOM.render(
   () => {
     store.dispatch({
       type: ACTIONS.APP_INIT,
-      username: 'Default_Test_User',
       dispatch: store.dispatch,
     });
   }
