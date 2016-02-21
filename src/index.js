@@ -27,7 +27,6 @@ const store = createStoreWithMiddleware(reducer)
 const App = props => <div><h2 className="app-title">App</h2>{ props.children }</div>;
 const Foo = props => <div>Foo</div>;
 const Bar = props => <div>Bar</div>;
-const LoginComponent = props => Login({ props });
 
 // Required for replaying actions from devtools to work
 reduxRouterMiddleware.listenForReplays(store)
@@ -38,7 +37,7 @@ ReactDOM.render(
       <Route path="/" component={Login}/>
       <Route path="foo" component={Foo}/>
       <Route path="bar" component={Bar}/>
-      <Route path="world" component={connect(({ game }) => ({ game }))(World)} />
+      <Route path="world" component={connect(({ game }) => ({ game }))(World)}/>
     </Router>
   </Provider>,
   document.getElementById('content'),

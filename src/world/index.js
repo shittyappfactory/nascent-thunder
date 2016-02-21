@@ -8,6 +8,7 @@ import fly from 'voxel-fly';
 import haikume from 'haiku.js';
 import walk from './multiwalk';
 import addFog from './fog';
+import MessageBox from '../MessageBox';
 
 import constants, { ACTIONS } from '../constants';
 import gameSetup from './gameSetup';
@@ -151,10 +152,10 @@ export default class World extends Component {
   handleTick() {
 
   }
-
   render() {
     return (<div className="World">
       <div className="World__viewport" ref="viewport"/>
+      <MessageBox>{ this.props.game.messages }</MessageBox>
     </div>);
   }
 }

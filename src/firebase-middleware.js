@@ -10,10 +10,10 @@ const firebaseUsersRef = firebaseRootRef.child('users');
 
 let userUpdateHandler = () => {};
 let userDeletedHandler = () => {};
-const outerUserUpdateHandler = s => userUpdateHandler(s);
+const outerUserUpdateHandler = (s, isNewUser) => userUpdateHandler(s, isNewUser);
 const outerUserDeletedHandler = s => userDeletedHandler(s);
-firebaseUsersRef.on('child_added', outerUserUpdateHandler);
-firebaseUsersRef.on('child_changed', outerUserUpdateHandler);
+firebaseUsersRef.on('child_added', (s) => outerUserUpdateHandler(s, true));
+firebaseUsersRef.on('child_changed', (s) => outerUserUpdateHandler(s, false));
 firebaseUsersRef.on('child_removed', outerUserDeletedHandler);
 
 window.onbeforeunload = (e) => {
@@ -26,16 +26,20 @@ export default store => next => action => {
   switch (action.type) {
     case ACTIONS.INIT_SELF: {
 
-      userUpdateHandler = (snapshot) => {
+      userUpdateHandler = (snapshot, isNewUser) => {
         const username = snapshot.key();
         const properties = snapshot.val();
         const { game } = store.getState();
-        
+
         if (game.self && game.self.username !== username) {
-          store.dispatch({
+          let payload = {
             type: ACTIONS.UPDATE_OTHER,
             player: { username, properties },
-          });
+          }
+          if (isNewUser) {
+            payload.message = username + " has entered the game";
+          }
+          store.dispatch(payload);
         }
       };
 
