@@ -45,6 +45,20 @@ export default function(state = storeInitialState, action) {
 				}
 			}
 		}
+
+        case ACTIONS.DELETE_OTHER: {
+            const filteredPlayers = Object.keys(state.players).reduce((acc, key) => {
+                if (key !== action.username) {
+                    acc[key] = state.players[key];
+                }
+                return acc;
+            }, {});
+
+            return {
+                ...state,
+                players: filteredPlayers
+            }
+        }
 	}
 
 	return state;
